@@ -1,35 +1,42 @@
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
+import React from "react";
 
 const Profile = () => {
-  const { token } = useContext(AuthContext);
-  const [user, setUser] = useState(null);
-  const [rented, setRented] = useState(0);
-
-  useEffect(() => {
-    const load = async () => {
-      const res = await axios.get("http://localhost:5000/auth/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUser(res.data.user);
-      setRented(res.data.rentedCount);
-    };
-    load();
-  }, []);
-
-  if (!user) return <div>Loading...</div>;
-
   return (
-    <div className="px-6 py-10 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">My Profile</h1>
+    <div className="min-h-screen bg-gray-100 p-10 flex justify-center">
+      <div className="bg-white shadow-xl p-8 rounded-3xl w-full max-w-2xl">
 
-      <div className="space-y-3">
-        <p><strong>Name:</strong> {user.name}</p>
-        <p><strong>Place:</strong> {user.place}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-        <p><strong>Phone:</strong> {user.phone}</p>
-        <p><strong>Books Rented:</strong> {rented}</p>
+        <h2 className="text-3xl font-semibold mb-6 text-gray-800">My Profile</h2>
+
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Name"
+            className="w-full border p-3 rounded-xl"
+          />
+          <input
+            type="text"
+            placeholder="Place"
+            className="w-full border p-3 rounded-xl"
+          />
+          <input
+            type="text"
+            placeholder="Age"
+            className="w-full border p-3 rounded-xl"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full border p-3 rounded-xl"
+          />
+
+          <button className="w-full bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700">
+            Update Profile
+          </button>
+
+          <p className="text-gray-700 font-semibold mt-3">
+            📘 Books Rented: <span className="text-blue-600">3</span>
+          </p>
+        </div>
       </div>
     </div>
   );
