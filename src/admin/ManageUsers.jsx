@@ -13,14 +13,23 @@ export default function ManageUsers() {
     }
   };
 
-  const deleteUser = async (id) => {
-    try {
-      await API.delete(`/users/${id}`);
-      fetchUsers();
-    } catch (err) {
-      console.log("Error removing user:", err);
-    }
-  };
+const deleteUser = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await API.delete(`/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    alert(res.data.message || "User deleted");
+    fetchUsers();
+  } catch (err) {
+    console.error("Error removing user:", err.response?.data || err);
+    alert("Failed to delete user. Admin access required.");
+  }
+};
+
 
   useEffect(() => {
     fetchUsers();
@@ -39,12 +48,16 @@ export default function ManageUsers() {
               <p className="text-gray-600">{user.email}</p>
             </div>
 
-            <button
-              onClick={() => deleteUser(user._id)}
-              className="px-3 py-1 bg-red-500 text-white rounded"
-            >
-              Delete User
-            </button>
+           <button onClick={() => {
+              if (window.confirm(`Are you sure you want to delete ${user.name}?`)) {
+                deleteUser(user._id);
+              }
+            }}
+            className="px-3 py-1 bg-red-500 text-white rounded"
+          >
+            Delete User
+          </button>
+
 
           </div>
         ))}
