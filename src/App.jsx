@@ -1,29 +1,43 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-// Import your pages
 import Home from "./user/Home";
 import Login from "./user/Login";
 import SignupPage from "./user/SignupPage";
 import Profile from "./user/Profile";
-import BookDetails from "./user/BookDetails";
 import AdminDashboard from "./admin/AdminDashboard";
+import AdminProfile from "./admin/AdminProfile";
+import ManageBooks from "./admin/ManageBooks";
+import ManageUsers from "./admin/ManageUsers";
+import AdminRentals from "./admin/AdminRentals";
+import SingleBook from "./user/SingleBook";
+import Books from "./user/Books";
+import EditProfile from "./user/EditProfile";
+import AddBook from "./admin/AddBook";
 
 const App = () => {
   return (
     <Router>
       <Routes>
 
-        {/* USER ROUTES */}
-        <Route path="/" element={<Home />} />
+       
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/books" element={<Books />} />
 
         <Route path="/profile" element={<Profile />} />
-        <Route path="/book/:id" element={<BookDetails />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+
+       <Route path="/book/:id" element={<SingleBook />} />
 
         {/* ADMIN ROUTE */}
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/books" element={<ManageBooks />} />
+        <Route path="/admin/users" element={<ManageUsers />} />
+        <Route path="/admin/rentals" element={<AdminRentals />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
+        <Route path="/admin/books/add" element={<AddBook />} />
 
         {/* FALLBACK ROUTE */}
         <Route

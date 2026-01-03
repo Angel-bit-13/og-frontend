@@ -1,144 +1,115 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import API from "../api/axios";
 
-function SignupPage() {
-  const [formData, setFormData] = useState({
+const Signup = () => {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
     name: "",
     place: "",
     age: "",
     email: "",
     education: "",
     phone: "",
-    password: "",
-    agreedToTerms: false,
+    password: ""
   });
 
-  const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+  const validate = () => {
+    const newErrors = {};
+
+    if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(form.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!/^\d{10}$/.test(form.phone)) {
+      newErrors.phone = "Phone number must be 10 digits";
+    }
+
+    if (!/^(?=.*\d).{6,}$/.test(form.password)) {
+      newErrors.password = "Password must be 6+ characters and include a number";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.agreedToTerms) {
-      alert(
-        "You must agree to the terms and conditions. Note: If a book is not returned or is damaged, a fine will be charged."
-      );
-      return;
+    if (!validate()) return;
+
+    try {
+      // ✅ CORRECT ENDPOINT (NO /api HERE)
+      await API.post("/auth/register", form);
+
+      const loginRes = await API.post("/auth/login", {
+        email: form.email,
+        password: form.password,
+      });
+
+      localStorage.setItem("token", loginRes.data.token);
+      localStorage.setItem("role", loginRes.data.role);
+
+      navigate("/home");
+    } catch (err) {
+      console.error("Signup error:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Signup failed");
     }
-    // For frontend-only demo, just show alert and redirect
-    alert("Signup successful!");
-    navigate("/login");
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f5e9dc] px-4">
-      <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center text-[#6F4E37] mb-6">
+    <div
+      className="min-h-screen flex justify-center items-center relative bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80')",
+      }}
+    >
+      <div className="absolute inset-0 bg-[#f5f0e6]/70 backdrop-blur-sm"></div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="relative z-10 max-w-md w-full bg-white/70 backdrop-blur-lg rounded-3xl p-10 shadow-2xl border border-[#e0d6c3]"
+      >
+        <h2 className="text-3xl font-extrabold text-[#7c6651] mb-6 text-center">
           Create Account
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-[#d4a373]"
-          />
-          <input
-            type="text"
-            name="place"
-            placeholder="Place"
-            required
-            value={formData.place}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-[#d4a373]"
-          />
-          <input
-            type="number"
-            name="age"
-            placeholder="Age"
-            required
-            value={formData.age}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-[#d4a373]"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email ID"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-[#d4a373]"
-          />
-          <input
-            type="text"
-            name="education"
-            placeholder="Education"
-            required
-            value={formData.education}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-[#d4a373]"
-          />
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone Number"
-            required
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-[#d4a373]"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-[#d4a373]"
-          />
-
-          <label className="flex items-start space-x-2 text-gray-700">
+        {["name", "place", "age", "email", "education", "phone", "password"].map((key) => (
+          <div key={key} className="mb-4">
             <input
-              type="checkbox"
-              name="agreedToTerms"
-              checked={formData.agreedToTerms}
-              onChange={handleChange}
-              className="form-checkbox h-5 w-5 text-[#6F4E37] mt-1"
+              type={key === "password" ? "password" : key === "age" ? "number" : "text"}
+              placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+              className={`w-full p-4 rounded-xl border bg-[#fffaf0] text-[#7c6651]
+                ${errors[key] ? "border-red-500" : "border-[#d8c7aa]"}`}
+              value={form[key]}
+              onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+              required
             />
-            <span>
-              I agree to the <strong>terms and conditions</strong> (If a book is
-              not returned or damaged, a fine will be charged)
-            </span>
-          </label>
+            {errors[key] && (
+              <p className="text-red-500 text-sm mt-1">{errors[key]}</p>
+            )}
+          </div>
+        ))}
 
-          <button
-            type="submit"
-            className="w-full bg-[#6F4E37] text-white py-2 rounded-lg hover:bg-[#4a3f35] transition"
-          >
-            Sign Up
-          </button>
-        </form>
+        <button
+          type="submit"
+          className="w-full p-4 rounded-full bg-[#d8c7aa] text-[#7c6651] font-bold hover:bg-[#c9b492]"
+        >
+          Sign Up
+        </button>
 
-        <p className="text-center mt-4 text-gray-700">
+        <p className="text-center mt-6 text-[#7c6651]">
           Already have an account?{" "}
-          <a href="/login" className="text-[#6F4E37] hover:underline">
+          <Link to="/login" className="underline">
             Login
-          </a>
+          </Link>
         </p>
-      </div>
+      </form>
     </div>
   );
-}
+};
 
-export default SignupPage;
+export default Signup;
