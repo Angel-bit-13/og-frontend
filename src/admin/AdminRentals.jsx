@@ -24,8 +24,8 @@ export default function AdminRentals() {
     }) : "-";
 
   return (
-    <div className="p-10">
-      <h1 className="text-3xl font-bold mb-4">Book Rentals</h1>
+    <div className="p-10 bg-[#F5EFE6] min-h-screen">
+      <h1 className="text-3xl font-bold text-[#6F4E37] mb-4">Book Rentals</h1>
 
       <div className="bg-white shadow rounded-lg p-5">
         {rentals.map((r) => (
