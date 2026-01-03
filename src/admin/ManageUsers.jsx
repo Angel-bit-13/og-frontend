@@ -36,8 +36,8 @@ const deleteUser = async (id) => {
   }, []);
 
   return (
-    <div className="p-10">
-      <h1 className="text-3xl font-bold mb-4">Manage Users</h1>
+    <div className="p-10 bg-[#F5EFE6] min-h-screen">
+      <h1 className="text-3xl font-bold  text-[#6F4E37] mb-4">Manage Users</h1>
 
       <div className="bg-white shadow rounded-lg p-5">
         {users.map((user) => (
@@ -53,7 +53,7 @@ const deleteUser = async (id) => {
                 deleteUser(user._id);
               }
             }}
-            className="px-3 py-1 bg-red-500 text-white rounded"
+            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
           >
             Delete User
           </button>
