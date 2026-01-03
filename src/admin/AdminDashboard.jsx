@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import API from "../api/axios";
-import { User, BookOpen, Users, ClipboardList, LogOut } from "lucide-react";
+import { BookOpen, Users, ClipboardList, LogOut } from "lucide-react";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -91,12 +91,6 @@ const AdminDashboard = () => {
         {/* Top Bar */}
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-semibold text-[#7c6651]">Dashboard</h2>
-          <button
-            onClick={() => navigate("/admin/profile")}
-            className="p-2 rounded-full hover:bg-[#d8c7aa] transition"
-          >
-            <User size={24} />
-          </button>
         </div>
 
         {/* Stats Cards */}
