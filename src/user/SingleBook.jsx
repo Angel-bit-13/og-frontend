@@ -123,6 +123,14 @@ function SingleBook() {
   if (!book) return <p className="text-center mt-20 text-lg">Book not found</p>;
 
   const isRented = book.status === "rented";
+  const userId = localStorage.getItem("userId");
+
+  const isMyRental =
+  isRented &&
+  (
+    book.rentedBy === userId ||
+    book.currentRental?.user === userId
+  );
 
   return (
     <div className="min-h-screen bg-[#f5ede0] flex justify-center p-6">
@@ -175,8 +183,24 @@ function SingleBook() {
                   <div className="ml-6 flex gap-2 items-center flex-wrap">
                     <button onClick={handleLike} className={`text-white p-3 rounded-full transition ${liked ? "bg-[#b38b5d]" : "bg-[#a3733f] hover:bg-[#8c5f2c]"}`}><FaThumbsUp /></button>
                     <button onClick={handleUnlike} className={`text-white p-3 rounded-full transition ${disliked ? "bg-[#b38b5d]" : "bg-[#a3733f] hover:bg-[#8c5f2c]"}`}><FaThumbsDown /></button>
-                    {!isRented && <button onClick={rentBook} className="px-4 py-2 rounded-md bg-green-600 text-white hover:bg-green-700 transition">Rent</button>}
-                    {isRented && <button onClick={returnBook} className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition">Return</button>}
+                    {!isRented && (
+                    <button
+                      onClick={rentBook}
+                      className="px-4 py-2 rounded-md bg-green-600 text-white hover:bg-green-700 transition"
+                    >
+                      Rent
+                    </button>
+                  )}
+
+                  {isMyRental && (
+                    <button
+                      onClick={returnBook}
+                      className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
+                    >
+                      Return
+                    </button>
+                  )}
+
                   </div>
                 )}
               </div>
