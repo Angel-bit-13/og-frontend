@@ -28,22 +28,20 @@ export default function AdminRentals() {
       <h1 className="text-3xl font-bold text-[#6F4E37] mb-4">Book Rentals</h1>
 
       <div className="bg-white shadow rounded-lg p-5">
-        {rentals.map((r) => (
+        {rentals.filter((r) => r.status === "active") .map((r) => (
           <div
             key={r._id}
             className="border-b py-3 flex justify-between items-center"
           >
             <div>
+              
               <p><strong>Book:</strong> {r.book?.title}</p>
               <p><strong>User:</strong> {r.user?.name}</p>
-              <p><strong>Status:</strong> {r.status}</p>
               <p><strong>Rented On:</strong> {formatDate(r.rentedAt)}</p>
               {r.status === "active" && (
                 <p><strong>Due Date:</strong> {formatDate(r.expiresAt)}</p>
               )}
-              {r.status === "returned" && (
-                <p><strong>Returned On:</strong> {formatDate(r.returnedAt)}</p>
-              )}
+             
             </div>
           </div>
         ))}
