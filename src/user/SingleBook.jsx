@@ -79,7 +79,7 @@ useEffect(() => {
   const handleUnlike = async () => {
     if (!token) return alert("Please login first!");
     try {
-      await API.post(`/books/unlike/${id}`);
+      await API.post(`/books/dislike/${id}`);
       setDisliked(true);
       setLiked(false);
       getBook();
