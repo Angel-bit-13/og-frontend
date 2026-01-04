@@ -6,7 +6,7 @@ import { FaUserCircle } from "react-icons/fa";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  
   const [editMode, setEditMode] = useState(false);
   const [editData, setEditData] = useState({});
 
@@ -129,18 +129,18 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* BORROWED BOOKS */}
+        {/* RENTED BOOKS */}
         <h3 className="text-2xl font-semibold text-[#5a4632] text-center mb-6">
-          Borrowed Books
+          Rented Books
         </h3>
 
-        {user.likedBooks?.length === 0 ? (
+        {user.rentedBooks?.length === 0 ? (
           <p className="text-center text-[#8b7358]">
-            No borrowed books found
+            No books found
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {user.likedBooks.map((book) => (
+            {user.rentedBooks.map((book) => (
               <div
                 key={book._id}
                 className="bg-[#fffaf3] p-6 rounded-xl shadow-md border border-[#e2d6c2]"
