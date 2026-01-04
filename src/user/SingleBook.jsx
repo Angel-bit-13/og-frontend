@@ -28,8 +28,9 @@ function SingleBook() {
 
       if (token) {
         const userId = localStorage.getItem("userId");
-        setLiked(res.data.likes?.includes(userId) || false);
-        setDisliked(res.data.dislikes?.includes(userId) || false);
+        setLiked(res.data.likes?.some(id => id.toString() === userId) || false);
+        setDisliked(res.data.dislikes?.some(id => id.toString() === userId) || false);
+      
       }
       setError("");
     } catch (err) {
@@ -52,47 +53,65 @@ function SingleBook() {
       console.error(err);
     }
   };
+useEffect(() => {
+  const loadData = async () => {
+    if (token) {
+      await getUser();
+    }
+    await getBook();
+  };
+  loadData();
+}, []);
 
-  useEffect(() => {
-    getUser().then(() => getBook());
-  }, []);
 
   const handleLike = async () => {
     if (!token) return alert("Please login first!");
     try {
-      await API.post(`/books/like/${id}`, {}, { headers: { Authorization: `Bearer ${token}` } });
+      await API.post(`/books/like/${id}`);
       setLiked(true);
       setDisliked(false);
       getBook();
     } catch (err) {
       console.error(err);
-      alert("Error updating like");
     }
   };
 
   const handleUnlike = async () => {
     if (!token) return alert("Please login first!");
     try {
-      await API.post(`/books/unlike/${id}`, {}, { headers: { Authorization: `Bearer ${token}` } });
+      await API.post(`/books/unlike/${id}`);
       setDisliked(true);
       setLiked(false);
       getBook();
     } catch (err) {
       console.error(err);
-      alert("Error updating dislike");
     }
   };
 
+ const submitComment = async () => {
+  if (!newComment.trim()) return;
+
+  try {
+    const res = await API.post(`/books/comment/${id}`, {
+      text: newComment,
+    });
+    setComments([...comments, res.data]);
+    setNewComment("");
+  } catch (err) {
+    console.error("Comment failed:", err.response?.data);
+  }
+};
   const submitRating = async (value) => {
-    if (!token) return alert("Please login to rate!");
-    try {
-      const res = await API.post(`/books/rate/${id}`, { rating: value }, { headers: { Authorization: `Bearer ${token}` } });
-      setRating(res.data.averageRating);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to submit rating");
-    }
-  };
+  try {
+    const res = await API.post(`/books/rate/${id}`, {
+      rating: Number(value),
+    });
+    setRating(res.data.averageRating);
+  } catch (err) {
+    console.error("Rating failed:", err.response?.data);
+  }
+};
+
 
   const rentBook = async () => {
     if (!token) return alert("Please login first!");
@@ -181,8 +200,8 @@ function SingleBook() {
 
                 {token && (
                   <div className="ml-6 flex gap-2 items-center flex-wrap">
-                    <button onClick={handleLike} className={`text-white p-3 rounded-full transition ${liked ? "bg-[#b38b5d]" : "bg-[#a3733f] hover:bg-[#8c5f2c]"}`}><FaThumbsUp /></button>
-                    <button onClick={handleUnlike} className={`text-white p-3 rounded-full transition ${disliked ? "bg-[#b38b5d]" : "bg-[#a3733f] hover:bg-[#8c5f2c]"}`}><FaThumbsDown /></button>
+                    <button onClick={handleLike} className={`text-white p-3 rounded-full transition ${liked ?  "bg-[#5a3e1b]" : "bg-[#c1a074] hover:bg-[#8c5f2c]" }`}><FaThumbsUp /></button>
+                    <button onClick={handleUnlike} className={`text-white p-3 rounded-full transition ${disliked ? "bg-[#5a3e1b]" : "bg-[#c1a074] hover:bg-[#8c5f2c]"}`}><FaThumbsDown /></button>
                     {!isRented && (
                     <button
                       onClick={rentBook}
@@ -229,19 +248,8 @@ function SingleBook() {
                 placeholder="Add a comment..."
                 className="flex-1 p-3 rounded-xl border border-[#e6dcc7] outline-none bg-[#fff4e0] placeholder-[#a3886c] text-[#6f4e37]"
               />
-              <button
-                onClick={() => {
-                  if (!newComment.trim()) return;
-                  API.post(`/books/comment/${id}`, { text: newComment }, { headers: { Authorization: `Bearer ${token}` } })
-                    .then((res) => {
-                      setComments([...comments, res.data]);
-                      setNewComment("");
-                    });
-                }}
-                className="px-4 py-2 rounded-xl bg-[#b38b5d] text-white font-semibold hover:bg-[#a3733f] transition"
-              >
-                Submit
-              </button>
+             <button onClick={submitComment}>Submit</button>
+
             </div>
           )}
         </div>
