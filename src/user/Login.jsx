@@ -6,16 +6,12 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [agreeTerms, setAgreeTerms] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
+ 
 
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!agreeTerms) {
-    alert("Please agree to the Terms & Conditions to continue.");
-    return;
-  }
+    
     try {
       const res = await API.post("/auth/login", { email, password });
 
@@ -77,51 +73,7 @@ const Login = () => {
           />
         </div>
 
-        {/* Terms & Conditions */}
-        <div className="mb-6 flex items-start gap-3 text-[#7c6651]">
-          <input
-            type="checkbox"
-            id="terms"
-            checked={agreeTerms}
-            onChange={(e) => setAgreeTerms(e.target.checked)}
-            className="mt-1 accent-[#c9b492] cursor-pointer"
-            required
-          />
-          <label htmlFor="terms" className="text-sm cursor-pointer">
-            I agree to the{" "}
-            <span
-              className="underline hover:text-[#a38c6e]"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowTerms(true);
-              }}
-            >
-              Terms & Conditions
-            </span>
-          </label>
-          {showTerms && (
-          <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-            <div className="bg-[#fffaf0] max-w-sm w-full rounded-2xl p-6 shadow-2xl border border-[#d8c7aa]">
-              <h3 className="text-xl font-bold text-[#7c6651] mb-4">
-                Terms & Conditions
-              </h3>
-
-              <p className="text-[#7c6651] text-sm leading-relaxed">
-                If the book is not returned within the due date, a fine will be charged.
-              </p>
-
-              <button
-                onClick={() => setShowTerms(false)}
-                className="mt-6 w-full py-2 rounded-full bg-[#d8c7aa] text-[#7c6651] font-semibold hover:bg-[#c9b492] transition"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-
-        </div>
-
+      
 
         {/* Login Button */}
         <button
