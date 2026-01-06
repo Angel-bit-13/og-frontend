@@ -134,13 +134,13 @@ const Profile = () => {
           Rented Books
         </h3>
 
-        {user.rentedBooks?.length === 0 ? (
+        {user.rentedBooksWithDue?.length === 0 ? (
           <p className="text-center text-[#8b7358]">
             No books found
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {user.rentedBooks.map((book) => (
+            {user.rentedBooksWithDue.map((book) => (
               <div
                 key={book._id}
                 className="bg-[#fffaf3] p-6 rounded-xl shadow-md border border-[#e2d6c2]"
@@ -150,7 +150,13 @@ const Profile = () => {
                 </h4>
                 <p className="text-[#7a6248]">{book.author}</p>
                 <p className="text-sm text-[#9c8466]">{book.genre}</p>
-
+                        
+                {/* Due Date */}
+                {book.expiresAt && (
+                  <p className="text-sm text-[#b04a3f] mt-2">
+                    Due Date: {new Date(book.expiresAt).toLocaleDateString()}
+                  </p>
+                )}
                 <button
                   onClick={() => returnBook(book._id)}
                   className="mt-4 px-6 py-2 rounded-md
