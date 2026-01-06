@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 import { FaUser, FaTag, FaCalendarAlt, FaBook, FaStar, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
@@ -152,7 +152,36 @@ useEffect(() => {
   );
 
   return (
-    <div className="min-h-screen bg-[#f5ede0] flex justify-center p-6">
+   
+  <div className="min-h-screen bg-[#f5ede0] p-6">
+
+    {/* NAVBAR — FULL WIDTH AT TOP */}
+    <nav className="bg-[#E8DFCA] shadow-md px-8 py-4 flex justify-between items-center rounded-2xl mb-12 border border-[#D8CDBA]">
+      <h1 className="text-3xl font-bold text-[#6F4E37] tracking-wide">
+        📚 BeigeReads
+      </h1>
+
+      <div className="space-x-6 text-lg">
+        <Link to="/home" className="text-[#6F4E37] hover:text-black">
+          Home
+        </Link>
+
+        <Link to="/profile" className="text-[#6F4E37] hover:text-black">
+          Profile
+        </Link>
+
+        <Link to="/login" className="text-[#6F4E37] hover:text-black">
+          Logout
+        </Link>
+      </div>
+    </nav>
+
+    {/* CENTER ONLY THE BOOK CONTENT */}
+    <div className="flex justify-center">
+      
+    
+
+
       <div className="bg-[#fff8f0] shadow-2xl rounded-3xl p-10 max-w-4xl w-full flex flex-col items-center gap-10 border border-[#e6dcc7]">
 
         <h1 className="text-5xl md:text-6xl font-bold text-center text-[#6f4e37] drop-shadow-lg tracking-wide" style={{ fontFamily: "'Dancing Script', cursive" }}>
@@ -253,7 +282,7 @@ useEffect(() => {
             </div>
           )}
         </div>
-
+</div>
       </div>
     </div>
   );
