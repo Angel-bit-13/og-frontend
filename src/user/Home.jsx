@@ -82,6 +82,8 @@ const Home = () => {
           
           
           <Link to="/profile" className="text-[#6F4E37] hover:text-black">Profile</Link>
+
+          <Link to="/login" className="text-[#6F4E37] hover:text-black">Logout</Link>
         </div>
       </nav>
 
