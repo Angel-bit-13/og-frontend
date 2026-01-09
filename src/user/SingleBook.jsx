@@ -2,6 +2,7 @@ import { useParams,Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 import { FaUser, FaTag, FaCalendarAlt, FaBook, FaStar, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 function SingleBook() {
   const { id } = useParams();
@@ -151,65 +152,78 @@ useEffect(() => {
     book.currentRental?.user === userId
   );
 
-  return (
-   
-  <div className="min-h-screen bg-[#f5ede0] p-6">
+return (
+  <div className="min-h-screen bg-gradient-to-br from-[#2a57cb] via-[#08142e] to-[#112684] p-6 text-white">
 
-    {/* NAVBAR — FULL WIDTH AT TOP */}
-    <nav className="bg-[#E8DFCA] shadow-md px-8 py-4 flex justify-between items-center rounded-2xl mb-12 border border-[#D8CDBA]">
-      <h1 className="text-3xl font-bold text-[#6F4E37] tracking-wide">
-        📚 BeigeReads
+    {/* NAVBAR */}
+    <nav className="bg-[#0b1635]/80 backdrop-blur-xl shadow-[0_0_30px_rgba(59,130,246,0.25)]
+                    px-8 py-4 flex justify-between items-center rounded-2xl mb-12
+                    border border-blue-900/40">
+      <h1 className="text-3xl font-bold tracking-wide text-blue-400">
+        BeigeReads
       </h1>
 
       <div className="space-x-6 text-lg">
-        <Link to="/home" className="text-[#6F4E37] hover:text-black">
+        <Link to="/home" className="text-blue-200 hover:text-blue-400 transition">
           Home
         </Link>
-
-        <Link to="/profile" className="text-[#6F4E37] hover:text-black">
+        <Link to="/profile" className="text-blue-200 hover:text-blue-400 transition">
           Profile
         </Link>
-
-        <Link to="/login" className="text-[#6F4E37] hover:text-black">
+        <Link to="/login" className="text-blue-200 hover:text-red-400 transition">
           Logout
         </Link>
       </div>
     </nav>
 
-    {/* CENTER ONLY THE BOOK CONTENT */}
     <div className="flex justify-center">
-      
-    
+      <div className="bg-[#0a1228]/80 backdrop-blur-xl
+                      shadow-[0_0_60px_rgba(59,130,246,0.25)]
+                      rounded-3xl p-10 max-w-4xl w-full
+                      border border-blue-900/40
+                      flex flex-col items-center gap-10">
 
-
-      <div className="bg-[#fff8f0] shadow-2xl rounded-3xl p-10 max-w-4xl w-full flex flex-col items-center gap-10 border border-[#e6dcc7]">
-
-        <h1 className="text-5xl md:text-6xl font-bold text-center text-[#6f4e37] drop-shadow-lg tracking-wide" style={{ fontFamily: "'Dancing Script', cursive" }}>
+        <h1 className="text-5xl md:text-6xl font-bold text-center
+                       text-blue-300 drop-shadow-[0_0_20px_rgba(59,130,246,0.6)]
+                       tracking-wide">
           {book.title}
         </h1>
 
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-10 w-full">
+        <div className="flex flex-col md:flex-row gap-10 w-full">
           <div className="shrink-0">
             {book.coverImage ? (
-              <img src={book.coverImage} alt={book.title} className="w-64 h-96 object-cover rounded-xl shadow-lg" />
+              <img
+                src={book.coverImage}
+                alt={book.title}
+                className="w-64 h-96 object-cover rounded-xl
+                           shadow-[0_0_40px_rgba(59,130,246,0.35)]"
+              />
             ) : (
-              <div className="w-64 h-96 flex items-center justify-center bg-[#d6c4a0] rounded-xl shadow-lg text-gray-500">
+              <div className="w-64 h-96 flex items-center justify-center
+                              bg-[#0f1b3d] rounded-xl text-blue-300">
                 No Image
               </div>
             )}
           </div>
 
-          <div className="flex-1 w-full">
-            <div className="bg-[#f7eee1] p-6 rounded-xl shadow-inner border border-[#e6dcc7]">
-              <table className="w-full table-auto">
-                <tbody className="divide-y divide-[#e6dcc7] text-[#6f4e37]">
-                  <tr className="bg-[#fff4e0]"><th className="px-4 py-3 flex items-center gap-2 font-semibold w-1/3"><FaUser /> Author</th><td className="px-4 py-3">{book.author}</td></tr>
-                  <tr><th className="px-4 py-3 flex items-center gap-2 font-semibold bg-[#fff4e0]"><FaTag /> Genre</th><td className="px-4 py-3">{book.genre}</td></tr>
-                  <tr className="bg-[#fff4e0]"><th className="px-4 py-3 flex items-center gap-2 font-semibold"><FaCalendarAlt /> Publication Year</th><td className="px-4 py-3">{book.publicationYear}</td></tr>
-                  <tr><th className="px-4 py-3 flex items-center gap-2 font-semibold bg-[#fff4e0]"><FaBook /> ISBN</th><td className="px-4 py-3">{book.ISBN}</td></tr>
-                  <tr className="bg-[#fff4e0]"><th className="px-4 py-3 font-semibold">Status</th>
+          <div className="flex-1">
+            <div className="bg-[#0b1635]/70 backdrop-blur-xl
+                            p-6 rounded-xl
+                            shadow-[inset_0_0_25px_rgba(59,130,246,0.2)]
+                            border border-blue-900/40">
+              <table className="w-full">
+                <tbody className="divide-y divide-blue-900/40">
+                  <tr><th className="px-4 py-3 text-blue-300">Author</th><td className="px-4 py-3">{book.author}</td></tr>
+                  <tr><th className="px-4 py-3 text-blue-300">Genre</th><td className="px-4 py-3">{book.genre}</td></tr>
+                  <tr><th className="px-4 py-3 text-blue-300">Publication Year</th><td className="px-4 py-3">{book.publicationYear}</td></tr>
+                  <tr><th className="px-4 py-3 text-blue-300">ISBN</th><td className="px-4 py-3">{book.ISBN}</td></tr>
+                  <tr>
+                    <th className="px-4 py-3 text-blue-300">Status</th>
                     <td className="px-4 py-3">
-                      <span className={`px-3 py-1 rounded-full font-semibold ${isRented ? "bg-red-200 text-red-800" : "bg-green-200 text-green-800"}`}>
+                      <span className={`px-4 py-1 rounded-full font-semibold
+                        ${isRented
+                          ? "bg-red-500/20 text-red-400"
+                          : "bg-green-500/20 text-green-400"}`}>
                         {isRented ? "Currently Rented" : "Available"}
                       </span>
                     </td>
@@ -217,75 +231,75 @@ useEffect(() => {
                 </tbody>
               </table>
 
-              <div className="mt-6 flex items-center gap-4 flex-wrap">
-                {[1,2,3,4,5].map((star) => (
-                  <FaStar key={star} size={28} className={`cursor-pointer transition ${(hoverRating || rating) >= star ? "text-yellow-500" : "text-gray-300"}`} 
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                {[1,2,3,4,5].map(star => (
+                  <FaStar
+                    key={star}
+                    size={28}
+                    className={`cursor-pointer transition
+                      ${(hoverRating || rating) >= star
+                        ? "text-yellow-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.9)]"
+                        : "text-blue-900"}`}
                     onMouseEnter={() => setHoverRating(star)}
                     onMouseLeave={() => setHoverRating(0)}
                     onClick={() => submitRating(star)}
                   />
                 ))}
-                <span className="ml-2 text-[#6f4e37] font-semibold">{rating.toFixed(1)}/5</span>
-
-                {token && (
-                  <div className="ml-6 flex gap-2 items-center flex-wrap">
-                    <button onClick={handleLike} className={`text-white p-3 rounded-full transition ${liked ?  "bg-[#5a3e1b]" : "bg-[#c1a074] hover:bg-[#8c5f2c]" }`}><FaThumbsUp /></button>
-                    <button onClick={handleUnlike} className={`text-white p-3 rounded-full transition ${disliked ? "bg-[#5a3e1b]" : "bg-[#c1a074] hover:bg-[#8c5f2c]"}`}><FaThumbsDown /></button>
-                    {!isRented && (
-                    <button
-                      onClick={rentBook}
-                      className="px-4 py-2 rounded-md bg-green-600 text-white hover:bg-green-700 transition"
-                    >
-                      Rent
-                    </button>
-                  )}
-
-                  {isMyRental && (
-                    <button
-                      onClick={returnBook}
-                      className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
-                    >
-                      Return
-                    </button>
-                  )}
-
-                  </div>
-                )}
+                <span className="font-semibold text-blue-300">
+                  {rating.toFixed(1)}/5
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Comments Section */}
-        <div className="w-full bg-[#f7eee1] p-6 rounded-2xl shadow-inner border border-[#e6dcc7]">
-          <h2 className="text-2xl font-bold text-[#6f4e37] mb-4">Comments</h2>
+        {/* COMMENTS */}
+        <div className="w-full bg-[#0b1635]/70 backdrop-blur-xl
+                        p-6 rounded-2xl border border-blue-900/40">
+          <h2 className="text-2xl font-bold text-blue-300 mb-4">Comments</h2>
+
           <div className="flex flex-col gap-4 max-h-64 overflow-y-auto">
-            {comments.length === 0 && <p className="text-[#6f4e37]">No comments yet.</p>}
-            {comments.map((c, index) => (
-              <div key={index} className="p-3 bg-[#fff4e0] rounded-xl border border-[#e6dcc7]">
-                <p className="text-[#6f4e37]">{c.text}</p>
-                <span className="text-sm text-[#8C6E54] mt-1 block">— {c.userName || "Anonymous"}</span>
+            {comments.length === 0 && (
+              <p className="text-blue-400/60">No comments yet.</p>
+            )}
+
+            {comments.map((c, i) => (
+              <div key={i}
+                   className="p-4 rounded-xl bg-[#08122b]
+                              border border-blue-900/40">
+                <p>{c.text}</p>
+                <span className="text-sm text-blue-400 block mt-1">
+                  — {c.userName || "Anonymous"}
+                </span>
               </div>
             ))}
           </div>
+
           {token && (
             <div className="mt-4 flex gap-2">
               <input
-                type="text"
                 value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
+                onChange={e => setNewComment(e.target.value)}
                 placeholder="Add a comment..."
-                className="flex-1 p-3 rounded-xl border border-[#e6dcc7] outline-none bg-[#fff4e0] placeholder-[#a3886c] text-[#6f4e37]"
+                className="flex-1 p-3 rounded-xl bg-[#020617]
+                           border border-blue-900/50
+                           text-white placeholder-blue-400
+                           focus:ring-2 focus:ring-blue-500 outline-none"
               />
-             <button onClick={submitComment}>Submit</button>
-
+              <button
+                onClick={submitComment}
+                className="px-6 rounded-xl bg-blue-600 hover:bg-blue-700 transition">
+                Send
+              </button>
             </div>
           )}
         </div>
-</div>
+
       </div>
     </div>
-  );
+  </div>
+);
+
 }
 
 export default SingleBook;
