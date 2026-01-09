@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api/axios";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -63,40 +64,91 @@ const Home = () => {
     fetchUser();
   }, []);
 
-  return (
-    <div className="min-h-screen bg-[#F5EFE6] p-10">
-      {/* NAVBAR */}
-      <nav className="bg-[#E8DFCA] shadow-md px-8 py-4 flex justify-between items-center rounded-2xl mb-12 border border-[#D8CDBA]">
-        <h1 className="text-3xl font-bold text-[#6F4E37] tracking-wide">📚 BeigeReads</h1>
-        <div className="flex items-center bg-white px-4 py-2 rounded-xl shadow-sm w-full max-w-md mx-6 border border-[#D8CDBA]">
-          <input
-            type="text"
-            placeholder="Search books..."
-            className="w-full bg-transparent outline-none text-[#6F4E37]"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="space-x-6 text-lg">
-          <Link to="/home" className="text-[#6F4E37] hover:text-black">Home</Link>
-          
-          
-          
-          <Link to="/profile" className="text-[#6F4E37] hover:text-black">Profile</Link>
+  
 
-          <Link to="/login" className="text-[#6F4E37] hover:text-black">Logout</Link>
+return (
+  <div className="min-h-screen bg-[#0b0f19] font-body text-white">
+
+    {/* HERO */}
+    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+
+      {/* Background image */}
+      <img
+        src="https://images.unsplash.com/photo-1519682337058-a94d519337bc"
+        className="absolute inset-0 w-full h-full object-cover"
+        alt="Books"
+      />
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/80" />
+
+      {/* Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,#ffffff12_1px,transparent_0)] bg-[length:24px_24px]" />
+
+      {/* Animated Content */}
+      <div className="relative z-10 text-center max-w-5xl px-6">
+       <motion.h1
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.9 }}
+  className="font-heading text-6xl md:text-7xl font-bold"
+>
+  <span
+    className="bg-gradient-to-r from-blue-400 via-indigo-500 to-blue-400
+               bg-clip-text text-transparent
+               drop-shadow-[0_2px_10px_rgba(37,99,235,0.7)]
+               animate-blue-glow"
+  >
+    BeigeReads
+  </span>
+  <br />
+  Discover Books Beautifully
+</motion.h1>
+
+
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="text-slate-300 text-lg mt-6 max-w-2xl mx-auto"
+        >
+          A modern digital library to explore, like, and rent books effortlessly.
+        </motion.p>
+
+        {/* Search */}
+        <motion.input
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.7 }}
+          type="text"
+          placeholder="Search by title or author..."
+          onChange={(e) => setSearch(e.target.value)}
+          className="mt-10 w-full max-w-xl px-6 py-4 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 outline-none focus:ring-2 focus:ring-blue-400 placeholder-slate-300"
+        />
+      </div>
+    </section>
+
+    {/* CONTENT */}
+    <section className="px-10 py-20">
+
+      {/* Navbar */}
+      <nav className="max-w-7xl mx-auto flex justify-between items-center mb-16">
+        <h2 className="font-heading text-3xl font-bold">BeigeReads</h2>
+        <div className="flex gap-8 text-sm text-slate-300">
+          <Link to="/home" className="hover:text-blue-400">Home</Link>
+          <Link to="/profile" className="hover:text-blue-400">Profile</Link>
+          <Link to="/login" className="text-red-400 hover:text-red-500">Logout</Link>
         </div>
       </nav>
 
-      <h2 className="text-4xl font-bold text-[#6F4E37] mb-8">
-        Explore Our Cozy Book Collection ☕📖
-      </h2>
-
-      {/* MATRIX BOOK SHELF */}
-      <div className="grid grid-cols-5 gap-x-6 gap-y-8 justify-items-center">
+      {/* Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
         {books
-          ?.filter((b) =>
-            b.title?.toLowerCase().includes(search.toLowerCase()) ||
-            b.author?.toLowerCase().includes(search.toLowerCase())
+          ?.filter(
+            (b) =>
+              b.title?.toLowerCase().includes(search.toLowerCase()) ||
+              b.author?.toLowerCase().includes(search.toLowerCase())
           )
           .map((book) => {
             const isRented = book.status === "rented";
@@ -104,59 +156,69 @@ const Home = () => {
             const liked = likes[book._id] || false;
 
             return (
-              <div
+              <motion.div
                 key={book._id}
-                className="relative w-[6cm] h-[10cm] bg-[#FAF6F0] border border-[#E3DCCE] rounded-3xl shadow-md hover:shadow-xl transition-all flex flex-col items-center"
+                whileHover={{ y: -10 }}
+                className="relative rounded-2xl overflow-hidden backdrop-blur-xl bg-white/10 border border-white/20 shadow-xl"
               >
-                <Link to={`/book/${book._id}`} className="absolute inset-0 z-0"></Link>
+                <Link to={`/book/${book._id}`} className="absolute inset-0 z-10" />
 
-                {/* Book Image */}
-                {book.coverImage ? (
-                  <img
-                    src={book.coverImage}
-                    alt={book.title}
-                    className="w-full h-[70%] object-cover rounded-t-2xl mb-2"
-                  />
-                ) : (
-                  <div className="w-full h-[70%] flex items-center justify-center bg-[#E3DCCE] text-[#6F4E37] font-bold">
-                    No Image
-                  </div>
-                )}
+                {/* Image */}
+                <div className="h-60 overflow-hidden">
+                  {book.coverImage ? (
+                    <img
+                      src={book.coverImage}
+                      alt={book.title}
+                      className="h-full w-full object-cover hover:scale-105 transition"
+                    />
+                  ) : (
+                    <div className="h-full flex items-center justify-center bg-white/10">
+                      No Image
+                    </div>
+                  )}
+                </div>
 
-                {/* Book Info */}
-                <div className="flex flex-col items-center justify-between p-2 h-[30%] w-full">
-                  <h3 className="text-sm font-bold text-center truncate">{book.title}</h3>
-                  <p className="text-xs text-center text-[#8C6E54] truncate">✍ {book.author}</p>
+                {/* Info */}
+                <div className="p-5">
+                  <h3 className="text-sm font-semibold truncate">{book.title}</h3>
+                  <p className="text-xs text-slate-400 truncate mt-1">
+                    {book.author}
+                  </p>
 
-                  <div className="flex justify-between w-full mt-1">
-                    {/* Like Button */}
+                  <div className="flex justify-between items-center mt-4">
                     <button
                       onClick={() => toggleLike(book._id)}
-                      className="text-red-600 hover:text-red-700 transition text-lg"
+                      className="text-red-400 hover:scale-110 transition"
                     >
                       {liked ? <FaHeart /> : <FaRegHeart />}
                     </button>
 
-                    {/* Status */}
                     <span
-                      className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
+                      className={`text-xs px-3 py-1 rounded-full font-medium ${
                         isRented
                           ? rentedByUser
-                            ? "bg-blue-300 text-blue-800"
-                            : "bg-red-300 text-red-800"
-                          : "bg-green-300 text-green-800"
+                            ? "bg-blue-500/20 text-blue-300"
+                            : "bg-red-500/20 text-red-300"
+                          : "bg-green-500/20 text-green-300"
                       }`}
                     >
-                      {isRented ? (rentedByUser ? "Rented by you" : "Rented") : "Available"}
+                      {isRented
+                        ? rentedByUser
+                          ? "Rented by you"
+                          : "Rented"
+                        : "Available"}
                     </span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
       </div>
-    </div>
-  );
+    </section>
+  </div>
+);
+
+
 };
 
 export default Home;
