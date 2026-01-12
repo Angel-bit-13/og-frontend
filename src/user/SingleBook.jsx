@@ -170,7 +170,7 @@ function SingleBook() {
                   <tr><th className="px-4 py-3 flex items-center gap-2 font-semibold"><FaBook /> ISBN</th><td className="px-4 py-3">{book.ISBN}</td></tr>
                    <tr><th className="px-4 py-3  flex items-center gap-2 font-semibold">Status</th>
                       <td>
-                        <span className={`px-3 py-1 ml-3 rounded-full font-semibold ${isRented ? "bg-red-200 text-red-800" : "bg-green-200 text-green-800"}`}>
+                        <span className={`px-3 py-1 ml-3 rounded-full font-semibold ${isRented ? "bg-red-500/20 text-red-400 border border-red-500/40": "bg-green-500/20 text-green-400 border border-green-500/40"}`}>
                           {isRented ? "Currently Rented" : "Available"}
                         </span>
                       </td>
