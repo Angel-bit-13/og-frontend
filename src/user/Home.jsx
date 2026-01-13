@@ -99,7 +99,7 @@ return (
                drop-shadow-[0_2px_10px_rgba(37,99,235,0.7)]
                animate-blue-glow"
   >
-    BeigeReads
+    NeonReads
   </span>
   <br />
   Discover Books Beautifully
@@ -134,7 +134,7 @@ return (
 
       {/* Navbar */}
       <nav className="max-w-7xl mx-auto flex justify-between items-center mb-16">
-        <h2 className="font-heading text-3xl font-bold">BeigeReads</h2>
+        <h2 className="font-heading text-3xl font-bold">NeonReads</h2>
         <div className="flex gap-8 text-sm text-slate-300">
           <Link to="/home" className="hover:text-blue-400">Home</Link>
           <Link to="/profile" className="hover:text-blue-400">Profile</Link>
