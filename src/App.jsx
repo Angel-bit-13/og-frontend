@@ -4,7 +4,6 @@ import Login from "./user/Login";
 import SignupPage from "./user/SignupPage";
 import Profile from "./user/Profile";
 import AdminDashboard from "./admin/AdminDashboard";
-import AdminProfile from "./admin/AdminProfile";
 import ManageBooks from "./admin/ManageBooks";
 import ManageUsers from "./admin/ManageUsers";
 import AdminRentals from "./admin/AdminRentals";
@@ -36,7 +35,7 @@ const App = () => {
         <Route path="/admin/books" element={<ManageBooks />} />
         <Route path="/admin/users" element={<ManageUsers />} />
         <Route path="/admin/rentals" element={<AdminRentals />} />
-        <Route path="/admin/profile" element={<AdminProfile />} />
+      
         <Route path="/admin/books/add" element={<AddBook />} />
 
         {/* FALLBACK ROUTE */}
