@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
 
-const Signup = () => {
+const SignupPage = () => {
   const navigate = useNavigate();
-   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
-
+ const [showTerms, setShowTerms] = useState(false);
+ const [agreeTerms, setAgreeTerms] = useState(false);
   const [form, setForm] = useState({
     name: "",
     place: "",
@@ -14,7 +13,7 @@ const Signup = () => {
     email: "",
     education: "",
     phone: "",
-    password: ""
+    password: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -31,7 +30,8 @@ const Signup = () => {
     }
 
     if (!/^(?=.*\d).{6,}$/.test(form.password)) {
-      newErrors.password = "Password must be 6+ characters and include a number";
+      newErrors.password =
+        "Password must be at least 6 characters and include a number";
     }
 
     setErrors(newErrors);
@@ -41,12 +41,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    if (!agreeTerms) {
+     if (!agreeTerms) {
     alert("Please agree to the Terms & Conditions to continue.");
     return;
   }
+
     try {
-      // ✅ CORRECT ENDPOINT (NO /api HERE)
       await API.post("/auth/register", form);
 
       const loginRes = await API.post("/auth/login", {
@@ -72,34 +72,80 @@ const Signup = () => {
           "url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1400&q=80')",
       }}
     >
-      <div className="absolute inset-0 bg-[#f5f0e6]/70 backdrop-blur-sm"></div>
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#020617]/90 via-[#050b1a]/85 to-[#020617]/95 backdrop-blur-sm"></div>
 
       <form
         onSubmit={handleSubmit}
-        className="relative z-10 max-w-md w-full bg-white/70 backdrop-blur-lg rounded-3xl p-10 shadow-2xl border border-[#e0d6c3]"
+        className="relative z-10 max-w-md w-full
+                   bg-[#0b1635]/80 backdrop-blur-xl
+                   rounded-3xl p-10
+                   shadow-[0_0_50px_rgba(59,130,246,0.35)]
+                   border border-blue-900/40
+                   flex flex-col items-center"
       >
-        <h2 className="text-3xl font-extrabold text-[#7c6651] mb-6 text-center">
+        {/* LOGO */}
+        <svg
+          width="60"
+          height="60"
+          viewBox="0 0 64 64"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="mb-4 drop-shadow-[0_0_15px_rgba(59,130,246,0.6)]"
+        >
+          <path d="M10 14 L30 10 L30 54 L10 50 Z" fill="#1e3a8a" />
+          <path d="M54 14 L34 10 L34 54 L54 50 Z" fill="#2563eb" />
+          <rect x="30" y="10" width="4" height="44" fill="#60a5fa" rx="1" />
+        </svg>
+
+        {/* TITLE */}
+        <h1 className="text-3xl font-extrabold text-blue-400 mb-1 tracking-wide">
+          NeonReads
+        </h1>
+
+        <h2 className="text-xl font-semibold text-blue-300 mb-6 text-center">
           Create Account
         </h2>
 
-        {["name", "place", "age", "email", "education", "phone", "password"].map((key) => (
-          <div key={key} className="mb-4">
-            <input
-              type={key === "password" ? "password" : key === "age" ? "number" : "text"}
-              placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
-              className={`w-full p-4 rounded-xl border bg-[#fffaf0] text-[#7c6651]
-                ${errors[key] ? "border-red-500" : "border-[#d8c7aa]"}`}
-              value={form[key]}
-              onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-              required
-            />
-            {errors[key] && (
-              <p className="text-red-500 text-sm mt-1">{errors[key]}</p>
-            )}
-          </div>
-        ))}
-           {/* Terms & Conditions */}
-                 <div className="mb-6 flex items-start gap-3 text-[#7c6651]">
+        {/* INPUTS */}
+        {["name", "place", "age", "email", "education", "phone", "password"].map(
+          (key) => (
+            <div key={key} className="mb-4 w-full">
+              <input
+                type={
+                  key === "password"
+                    ? "password"
+                    : key === "age"
+                    ? "number"
+                    : "text"
+                }
+                placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+                className={`w-full p-4 rounded-xl
+                  bg-[#020617]/80
+                  text-white placeholder-blue-400
+                  border ${
+                    errors[key]
+                      ? "border-red-500"
+                      : "border-blue-900/50"
+                  }
+                  focus:ring-2 focus:ring-blue-500
+                  outline-none transition-all duration-300`}
+                value={form[key]}
+                onChange={(e) =>
+                  setForm({ ...form, [key]: e.target.value })
+                }
+                required
+              />
+              {errors[key] && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors[key]}
+                </p>
+              )}
+            </div>
+          )
+        )}
+        {/* Terms & Conditions */}
+                 <div className="mb-6 flex items-start gap-3 text-[#65b3d8]">
                    <input
                      type="checkbox"
                      id="terms"
@@ -111,7 +157,7 @@ const Signup = () => {
                    <label htmlFor="terms" className="text-sm cursor-pointer">
                      I agree to the{" "}
                      <span
-                       className="underline hover:text-[#a38c6e]"
+                       className="underline hover:text-[#1c8bd4]"
                        onClick={(e) => {
                          e.preventDefault();
                          setShowTerms(true);
@@ -122,18 +168,18 @@ const Signup = () => {
                    </label>
                    {showTerms && (
                    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-                     <div className="bg-[#fffaf0] max-w-sm w-full rounded-2xl p-6 shadow-2xl border border-[#d8c7aa]">
-                       <h3 className="text-xl font-bold text-[#7c6651] mb-4">
+                     <div className="bg-[#fffaf0] max-w-sm w-full rounded-2xl p-6 shadow-2xl border border-[#bbe0f5]">
+                       <h3 className="text-xl font-bold text-[#116877] mb-4">
                          Terms & Conditions
                        </h3>
          
-                       <p className="text-[#7c6651] text-sm leading-relaxed">
+                       <p className="text-[#193363] text-sm leading-relaxed">
                          If the book is not returned within the due date, a fine will be charged.
                        </p>
          
                        <button
                          onClick={() => setShowTerms(false)}
-                         className="mt-6 w-full py-2 rounded-full bg-[#d8c7aa] text-[#7c6651] font-semibold hover:bg-[#c9b492] transition"
+                         className="mt-6 w-full py-2 rounded-full bg-[#9ab6da] text-[#0e2850] font-semibold hover:bg-[#669aaf] transition"
                        >
                          Close
                        </button>
@@ -143,16 +189,28 @@ const Signup = () => {
          
                  </div>
          
+
+        {/* SUBMIT */}
         <button
           type="submit"
-          className="w-full p-4 rounded-full bg-[#d8c7aa] text-[#7c6651] font-bold hover:bg-[#c9b492]"
+          className="w-full p-4 rounded-full
+                     bg-gradient-to-r from-blue-600 to-blue-500
+                     text-white font-bold
+                     shadow-[0_0_25px_rgba(59,130,246,0.6)]
+                     hover:shadow-[0_0_40px_rgba(59,130,246,0.9)]
+                     hover:from-blue-500 hover:to-blue-400
+                     transition-all duration-300"
         >
           Sign Up
         </button>
 
-        <p className="text-center mt-6 text-[#7c6651]">
+        {/* LOGIN LINK */}
+        <p className="text-center mt-6 text-blue-300">
           Already have an account?{" "}
-          <Link to="/login" className="underline">
+          <Link
+            to="/login"
+            className="underline hover:text-blue-400 transition"
+          >
             Login
           </Link>
         </p>
@@ -161,4 +219,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupPage;
