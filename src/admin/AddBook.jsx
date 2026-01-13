@@ -20,9 +20,11 @@ export default function AddBook() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      await API.post("/admin/books", form);
+      await API.post("/admin/books", {
+        ...form,
+        publicationYear: Number(form.publicationYear),
+      });
       alert("Book added successfully");
       navigate("/admin/books");
     } catch (err) {
@@ -32,67 +34,63 @@ export default function AddBook() {
   };
 
   return (
-    <div className="p-10 bg-[#F5EFE6] min-h-screen flex justify-center">
+    <div className="min-h-screen flex justify-center items-center bg-[#030a1f]">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow w-full max-w-md"
+        className="w-full max-w-xl bg-[#fffaf3] p-12 rounded-2xl
+                   shadow-xl border border-[#dff1f0]"
       >
-        <h2 className="text-2xl font-bold mb-4 text-[#6F4E37]">
-          Add New Book
-        </h2>
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-semibold text-[#05163a]">
+            Add New Book
+          </h2>
+          <p className="text-sm text-[#0e1d50] mt-2">
+            Enter book details to add it to the library
+          </p>
+        </div>
 
-        <input
-          name="title"
-          placeholder="Book Title"
-          value={form.title}
-          onChange={handleChange}
-          required
-          className="w-full mb-3 p-2 border rounded"
-        />
+        {/* Inputs */}
+        {[
+          { key: "title", label: "Book Title" },
+          { key: "author", label: "Author" },
+          { key: "genre", label: "Genre" },
+          { key: "publicationYear", label: "Publication Year", type: "number" },
+          { key: "coverImage", label: "Cover Image URL" },
+        ].map(({ key, label, type }) => (
+          <div key={key} className="mb-6">
+            <label className="block text-sm font-medium text-[#0f3952] mb-2">
+              {label}
+            </label>
+            <input
+              type={type || "text"}
+              name={key}
+              value={form[key]}
+              onChange={handleChange}
+              required
+              className="w-full max-w-md mx-auto p-3 
+                         rounded-md border border-[#b2c9d6]
+                         bg-[#e8f1f7] text-[#153457]
+                         focus:outline-none focus:ring-2 focus:ring-[#9aaac8]
+                         transition"
+            />
+          </div>
+        ))}
 
-        <input
-          name="author"
-          placeholder="Author"
-          value={form.author}
-          onChange={handleChange}
-          required
-          className="w-full mb-3 p-2 border rounded"
-        />
+        {/* Status (hidden but consistent) */}
+        <input type="hidden" name="status" value="available" />
 
-        <input
-          name="genre"
-          placeholder="Genre"
-          value={form.genre}
-          onChange={handleChange}
-          required
-          className="w-full mb-3 p-2 border rounded"
-        />
-
-        <input
-          type="number"
-          name="publicationYear"
-          placeholder="Publication Year"
-          value={form.publicationYear}
-          onChange={handleChange}
-          required
-          className="w-full mb-3 p-2 border rounded"
-        />
-
-        <input
-          name="coverImage"
-          placeholder="Cover Image URL"
-          value={form.coverImage}
-          onChange={handleChange}
-          required
-          className="w-full mb-4 p-2 border rounded"
-        />
-
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
-        >
-          Add Book
-        </button>
+        {/* Submit Button */}
+        <div className="text-center mt-10">
+          <button
+            type="submit"
+            className="px-12 py-3 rounded-md
+                       bg-[#0f1569] text-white font-medium
+                       hover:bg-[#24397c] transition shadow-md"
+          >
+            Add Book
+          </button>
+        </div>
       </form>
     </div>
   );
